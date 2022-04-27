@@ -37,7 +37,7 @@ CREATE INDEX spots_car_IDX USING BTREE ON estacionamento.spots (car);
 [GET] /vagas
 ```
 
-## Listar uma vaga por ID
+### Listar uma vaga por ID
 ```
 [GET] /vagas/{ID}
 ```
