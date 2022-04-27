@@ -15,9 +15,8 @@ func main() {
     
     router.HandleFunc("/vagas", vagas.GetSpots).Methods("GET")
     router.HandleFunc("/vagas/{id}", vagas.GetSpot).Methods("GET")
-
-    router.HandleFunc("/contato", GetPeople).Methods("GET")
-    router.HandleFunc("/contato/{id}", GetPerson).Methods("GET")
+    router.HandleFunc("/vagas", vagas.SetSpot).Methods("POST")
+    
     router.HandleFunc("/contato/{id}", CreatePerson).Methods("POST")
     router.HandleFunc("/contato/{id}", DeletePerson).Methods("DELETE")
     log.Fatal(http.ListenAndServe(":8000", router))

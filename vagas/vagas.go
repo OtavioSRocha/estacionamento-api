@@ -1,11 +1,13 @@
 package vagas
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"estacionamento-api/database"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -16,7 +18,6 @@ var (
 	isempty   		bool
 	car 			Car
 )
-
 
 func GetSpots(w http.ResponseWriter, r *http.Request) {
 	var result []Spot
@@ -66,6 +67,30 @@ func GetSpot(w http.ResponseWriter, r *http.Request) {
 
 	defer rows.Close()
     json.NewEncoder(w).Encode(result)
+}
+
+func SetSpot(w http.ResponseWriter, r *http.Request) {
+    var spot Spot
+    _ = json.NewDecoder(r.Body).Decode(&spot)
+
+	db := database.ConectDB()
+	query := "INSERT INTO spots(vehicle, isempty) VALUES (?, ?)"
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancelfunc()
+	stmt, err := db.PrepareContext(ctx, query)
+	if err != nil {
+        log.Printf("Error %s when preparing SQL statement", err)
+    }
+    defer stmt.Close()
+    res, err := stmt.ExecContext(ctx, spot.Vehicle, spot.IsEmpty)
+    if err != nil {
+        log.Printf("Error %s when inserting row into spot table", err)
+    }
+    rows, err := res.RowsAffected()
+    if err != nil {
+        log.Printf("Error %s when finding rows affected", err)
+    }
+    log.Printf("%d spots created ", rows)
 }
 
 type Spot struct {
