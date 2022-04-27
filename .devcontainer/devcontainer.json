@@ -20,13 +20,13 @@
 		"--name",
 		"estacionamento-api",
 		"--network",
-		"outcenter",
+		"devnetwork",
 		"-l",
 		"traefik.frontend.rule=Host:estacionamento-api.localhost",
 		"-l",
 		"traefik.port=3000",
 		"-l",
-		"traefik.docker.network=outcenter"
+		"traefik.docker.network=devnetwork"
 	],
 
 	// Set *default* container specific settings.json values on container create.

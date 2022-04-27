@@ -6,10 +6,11 @@ import (
 	"estacionamento-api/database"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 var (
-	result 			[]Spot
 	id      		string
 	vehicle   		string
 	isempty   		bool
@@ -17,7 +18,8 @@ var (
 )
 
 
-func GetSpot(w http.ResponseWriter, r *http.Request){
+func GetSpots(w http.ResponseWriter, r *http.Request) {
+	var result []Spot
 	db := database.ConectDB()
 
 	rows, err := db.Query("SELECT s.id, s.vehicle , s.isempty, c.model, c.licenseplate FROM spots s LEFT OUTER JOIN cars c ON c.id  = s.car")
@@ -25,6 +27,31 @@ func GetSpot(w http.ResponseWriter, r *http.Request){
 		log.Fatal(err)
 	}
 	
+	for rows.Next() {
+		err := rows.Scan(&id, &vehicle, &isempty, &car.Model, &car.LicensePlate)
+		if err != nil {
+			log.Fatal(err)
+		}
+		result = append(result, Spot{ID: id, Vehicle: vehicle, IsEmpty: isempty, Car: &Car{LicensePlate:car.LicensePlate, Model: car.Model} })
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+    json.NewEncoder(w).Encode(result)
+}
+
+func GetSpot(w http.ResponseWriter, r *http.Request) {
+	var result []Spot
+	params := mux.Vars(r)
+	db := database.ConectDB()
+	rows, err := db.Query("SELECT s.id, s.vehicle , s.isempty, c.model, c.licenseplate FROM spots s LEFT OUTER JOIN cars c ON c.id  = s.car WHERE s.id = " + params["id"])
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for rows.Next() {
 		err := rows.Scan(&id, &vehicle, &isempty, &car.Model, &car.LicensePlate)
 		if err != nil {

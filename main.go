@@ -13,7 +13,8 @@ import (
 func main() {   
     router := mux.NewRouter()
     
-    router.HandleFunc("/vagas", vagas.GetSpot).Methods("GET")
+    router.HandleFunc("/vagas", vagas.GetSpots).Methods("GET")
+    router.HandleFunc("/vagas/{id}", vagas.GetSpot).Methods("GET")
 
     router.HandleFunc("/contato", GetPeople).Methods("GET")
     router.HandleFunc("/contato/{id}", GetPerson).Methods("GET")
