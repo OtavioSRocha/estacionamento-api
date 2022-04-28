@@ -30,24 +30,62 @@ CREATE INDEX spots_car_IDX USING BTREE ON estacionamento.spots (car);
 
 ## Rotas
 
-### Listar todas as vagas
+### Vagas
+
+#### Listar todas as vagas
 ```
 [GET] /vagas
 ```
 
-### Listar uma vaga por ID
+#### Listar uma vaga por ID
 ```
 [GET] /vagas/{ID}
 ```
 
-### Criar uma nova vaga
+#### Criar uma nova vaga
 ```
 [POST] /vagas
 ```
 Body
 ```json
 {
-	"vehicle": "bike",
+	"vehicle": "car",
 	"isempty": true
+}
+```
+### Carros
+
+#### Listar carros cadastrados
+```
+[GET] /cars
+```
+
+#### Listar um carro por id 
+```
+[GET] /cars/{ID}
+```
+
+#### Criar um novo carro
+```
+[POST] /cars
+```
+Body
+```json
+{
+	"LicensePlate": "licenseplate",
+	"model": "model"
+}
+```
+
+### Parking
+#### Ocupar uma vaga
+```
+[POST] /caroccupySpot
+```
+Body
+```json
+{
+	"spotid": "0",
+	"licensePlate": "licenseplate"
 }
 ```
