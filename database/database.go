@@ -8,7 +8,7 @@ import (
 )
 
 func ConectDB() *sql.DB {
-	db, err := sql.Open("mysql", "root:docker@tcp(172.23.0.3:3306)/estacionamento")
+	db, err := sql.Open("mysql", "root:docker@tcp(172.23.0.2:3306)/estacionamento")
 	
 	if err != nil {
 		panic(err)

@@ -7,22 +7,20 @@ Api para um sistema de estacionamento desenvolvido em linguagem Go, com finalida
 CREATE DATABASE estacionamento;
 
 CREATE TABLE estacionamento.cars (
-	id INT auto_increment NOT NULL,
-	model varchar(100) NOT NULL,
-	licenseplate varchar(50) NOT NULL,
-	CONSTRAINT cars_PK PRIMARY KEY (id)
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_0900_ai_ci;
+  id int NOT NULL AUTO_INCREMENT,
+  model varchar(100) NOT NULL,
+  licenseplate varchar(50) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY cars_UN (licenseplate)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE estacionamento.spots (
 	id INT auto_increment NOT NULL,
 	vehicle varchar(100) NOT NULL,
 	isempty BOOL DEFAULT true NOT NULL,
-	car INT NULL,
+	car varchar(50) NULL,
 	CONSTRAINT spots_PK PRIMARY KEY (id),
-	CONSTRAINT spots_FK FOREIGN KEY (car) REFERENCES estacionamento.cars(id)
+	CONSTRAINT spots_FK FOREIGN KEY (car) REFERENCES estacionamento.cars(licenseplate)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -42,7 +40,7 @@ CREATE INDEX spots_car_IDX USING BTREE ON estacionamento.spots (car);
 [GET] /vagas/{ID}
 ```
 
-### Create uma nova vaga
+### Criar uma nova vaga
 ```
 [POST] /vagas
 ```
