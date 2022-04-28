@@ -1,4 +1,4 @@
-package vagas
+package spots
 
 import (
 	"context"
