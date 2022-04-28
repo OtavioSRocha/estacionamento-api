@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"estacionamento-api/vagas"
+	"estacionamento-api/cars"
+	"estacionamento-api/parking"
+	"estacionamento-api/spots"
 
 	"github.com/gorilla/mux"
 )
@@ -13,39 +15,19 @@ import (
 func main() {   
     router := mux.NewRouter()
     
-    router.HandleFunc("/vagas", vagas.GetSpots).Methods("GET")
-    router.HandleFunc("/vagas/{id}", vagas.GetSpot).Methods("GET")
-    router.HandleFunc("/vagas", vagas.SetSpot).Methods("POST")
+    router.HandleFunc("/spots", spots.GetSpots).Methods("GET")
+    router.HandleFunc("/spots/{id}", spots.GetSpot).Methods("GET")
+    router.HandleFunc("/spots", spots.SetSpot).Methods("POST")
+
+    router.HandleFunc("/cars", cars.GetCars).Methods("GET")
+    router.HandleFunc("/cars/{id}", cars.GetCar).Methods("GET")
+    router.HandleFunc("/cars", cars.SetCar).Methods("POST")
+
+    router.HandleFunc("/occupySpot", parking.OccupySpot).Methods("POST")
     
-    router.HandleFunc("/contato/{id}", CreatePerson).Methods("POST")
     router.HandleFunc("/contato/{id}", DeletePerson).Methods("DELETE")
     log.Fatal(http.ListenAndServe(":8000", router))
 
-}
-
-
-func GetPeople(w http.ResponseWriter, r *http.Request) {
-    json.NewEncoder(w).Encode(people)
-}
-
-func GetPerson(w http.ResponseWriter, r *http.Request) {
-    params := mux.Vars(r)
-    for _, item := range people {
-        if item.ID == params["id"] {
-            json.NewEncoder(w).Encode(item)
-            return
-        }
-    }
-    json.NewEncoder(w).Encode(&Person{})
-}
-
-func CreatePerson(w http.ResponseWriter, r *http.Request) {
-    params := mux.Vars(r)
-    var person Person
-    _ = json.NewDecoder(r.Body).Decode(&person)
-    person.ID = params["id"]
-    people = append(people, person)
-    json.NewEncoder(w).Encode(people)
 }
 
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
