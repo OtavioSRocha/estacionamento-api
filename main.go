@@ -24,6 +24,7 @@ func main() {
     router.HandleFunc("/cars", cars.SetCar).Methods("POST")
 
     router.HandleFunc("/occupySpot", parking.OccupySpot).Methods("POST")
+    router.HandleFunc("/unoccupySpot", parking.UnoccupySpot).Methods("POST")
     
     router.HandleFunc("/contato/{id}", DeletePerson).Methods("DELETE")
     log.Fatal(http.ListenAndServe(":8000", router))

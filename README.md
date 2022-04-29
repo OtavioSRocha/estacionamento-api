@@ -80,12 +80,23 @@ Body
 ### Parking
 #### Ocupar uma vaga
 ```
-[POST] /caroccupySpot
+[POST] /occupySpot
 ```
 Body
 ```json
 {
 	"spotid": "0",
 	"licensePlate": "licenseplate"
+}
+```
+
+#### Desocupar uma vaga
+```
+[POST] /unoccupySpot
+```
+Body
+```json
+{
+	"spotid": "0"
 }
 ```
